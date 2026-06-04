@@ -2,10 +2,48 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/TopStyle.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog</title>
+    <title>SpringBlog</title>
 </head>
 <body>
-    <h1>Hello</h1>
+    <header class="header-glass">
+        <div class="container">
+            <a href="#" class="logo">LOGO</a>
+            <div class="nav-wrapper">
+            <nav>
+                <ul class="nav-links">
+                <li><a href="#">ホーム</a></li>
+                <li><a href="#">サービス</a></li>
+                <li><a href="#">会社概要</a></li>
+                <li><a href="#">お問い合わせ</a></li>
+                </ul>
+            </nav>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            </div>
+        </div>
+        <div class="mobile-menu">
+            <ul>
+            <li><a href="#">ホーム</a></li>
+            <li><a href="#">サービス</a></li>
+            <li><a href="#">会社概要</a></li>
+            <li><a href="#">お問い合わせ</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <script>
+        function toggleMenu() {
+            const hamburger = document.querySelector(".hamburger")
+            const mobileMenu = document.querySelector(".mobile-menu")
+
+            hamburger.classList.toggle("active")
+            mobileMenu.classList.toggle("active")
+        }
+    </script>
 </body>
 </html>
