@@ -7,8 +7,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class BlogController {
     @GetMapping("/")
-    public String getMethodName() {
+    public String home() {
         return "/blog";
     }
-    
+
+    @GetMapping("/makeBlog")
+    public String makeBlog() {
+        return "/makeBlog";
+    }
 }
