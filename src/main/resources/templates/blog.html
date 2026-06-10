@@ -16,7 +16,15 @@
                 <li><a href="/">ホーム</a></li>
                 <li><a href="/makeBlog">投稿</a></li>
                 <li><a href="#">会社概要</a></li>
-                <li><a href="#">ログイン</a></li>
+                <li th:if="${loginUser == null}">
+                    <a href="/login">ログイン</a>
+                </li>
+
+                <li th:if="${loginUser != null}">
+                    <form action="/logout" method="post" style="display:inline;">
+                        <button type="submit">ログアウト</button>
+                    </form>
+                </li>
                 </ul>
             </nav>
             <div class="hamburger" onclick="toggleMenu()">
