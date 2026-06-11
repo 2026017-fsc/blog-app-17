@@ -264,14 +264,13 @@
 
     <header class="header-glass">
         <div class="container">
-            <a href="#" class="logo">Spring Blog</a>
+            <a href="/" class="logo">Spring Blog</a>
             <div class="nav-wrapper">
             <nav>
                 <ul class="nav-links">
                 <li><a href="/">ホーム</a></li>
-                <li><a href="/makeBlog">投稿</a></li>
-                <li><a href="#">会社概要</a></li>
-                <li th:if="${loginUser == null}">
+                <li><a href="/new">投稿</a></li>
+                <!-- <li th:if="${loginUser == null}">
                     <a href="/login">ログイン</a>
                 </li>
 
@@ -279,41 +278,27 @@
                     <form action="/logout" method="post" style="display:inline;">
                         <button type="submit">ログアウト</button>
                     </form>
-                </li>
+                </li> -->
                 </ul>
             </nav>
-            <div class="hamburger" onclick="toggleMenu()">
-                <span></span>
-                <span></span>
-                <span></span>
             </div>
-            </div>
-        </div>
-        <div class="mobile-menu">
-            <ul>
-            <li><a href="#">ホーム</a></li>
-            <li><a href="#">サービス</a></li>
-            <li><a href="#">会社概要</a></li>
-            <li><a href="#">お問い合わせ</a></li>
-            </ul>
         </div>
     </header>
 
     <div class="editor-container">
       <h1>ブログ作成</h1>
-        <form th:action="@{/article/save}" method="post">
+        <form th:action="@{/new}" method="post">
             
             <div class="title-group">
                 <input type="text" name="title" class="title-input" placeholder="タイトルを入力してください">
             </div>
 
             <div class="editor-group">
-                <textarea id="myEditor" name="content">Amebaブログを始めました！</textarea>
+                <textarea id="myEditor" name="body">Amebaブログを始めました！</textarea>
             </div>
 
             <div style="text-align: right;"> <button type="submit" class="submit-btn">保存する</button>
             </div>
-            
         </form>
     </div>
 

@@ -1,69 +1,61 @@
 package com.example.blog_app;
 
-import jakarta.servlet.http.HttpSession;
-import org.springframework.ui.Model;
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import com.example.blog_app.Users.LoginForm;
-import com.example.blog_app.Users.UserService;
-
-
-
 
 @Controller
 public class BlogController {
+    private final BlogRepository blogRepository;
+
+    public BlogController(BlogRepository blogRepository) {
+        this.blogRepository = blogRepository;
+    }
+
     @GetMapping("/")
-    public String home() {
-        return "/blog";
-    }
+    public String home(Model model) {
 
-    @GetMapping("/makeBlog")
-    public String makeBlog(HttpSession session, RedirectAttributes redirectAttributes) {
-        if (session.getAttribute("username") == null) {
-            redirectAttributes.addFlashAttribute("message", "ログインしてください");
-            return "redirect:/login";
+        List<Blog> blogs = blogRepository.findAll();
+
+        for (Blog blog : blogs) {
+
+            String summary = blog.getBody().replaceAll("<[^>]*>", ""); 
+            if (summary.length() > 150){
+                summary = summary.substring(0, 150) + "...";
+            }
+
+            blog.setSummary(summary);
         }
-        return "/makeBlog";
+
+        model.addAttribute("blogs", blogs);
+
+        return "blog";
     }
 
-    private final UserService userService;
-
-    public BlogController(UserService userService) {
-        this.userService = userService;
-    }
-
-    @GetMapping("/login")
-    public String loginForm() {
-        return "login";
-    }
-
-    @PostMapping("/login")
-    public String login(@ModelAttribute LoginForm form, HttpSession session,
-        RedirectAttributes redirectAttributes) {
-        if (userService.authenticate(form.getUsername(), form.getPassword())) {
-        session.setAttribute("username", form.getUsername());
-        redirectAttributes.addFlashAttribute("message", "ログインしました");
-        return "redirect:/";
-        }
-        redirectAttributes.addFlashAttribute("message", "ユーザー名かパスワードが違います");
-        return "redirect:/login";
-    }
-
-    @PostMapping("/logout")
-    public String logout(HttpSession session) {
-        session.invalidate();
-        return "redirect:/";
-    }
-
-    @ModelAttribute
-    public void addLoginInfo(HttpSession session, Model model) {
+    @GetMapping("/blog/{id}")
+    public String detail(@PathVariable Long id,Model model) {
         model.addAttribute(
-            "loginUser",
-            session.getAttribute("username")
+            "blog",
+            blogRepository.findById(id)
         );
+
+        return "detail";
+    }
+
+    @GetMapping("/new")
+    public String newBlog(Model model) {
+        model.addAttribute("blog", new Blog());
+        return "makeBlog";
+    }
+
+    @PostMapping("/new")
+    public String create(@ModelAttribute Blog blog) {
+        blogRepository.save(blog);
+        return "redirect:/";
     }
 }
